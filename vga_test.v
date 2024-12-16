@@ -6,10 +6,9 @@ module vga_test (
 );
 
     wire video_on;
-
     reg [11:0] rgb_val;
 
-    vga_module VGA (.clk(clk), .reset(reset), .video_on(video_on), .h_sync(h_sync), .v_sync(v_sync), .pos_x(), .pos_y());
+    vga_module VGA (.inclk(clk), .reset(reset), .video_on(video_on), .h_sync(h_sync), .v_sync(v_sync), .pos_x(), .pos_y());
 
     always @(posedge clk or posedge reset) begin
         if (reset) rgb_val <= 0;

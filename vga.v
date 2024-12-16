@@ -20,7 +20,7 @@ module vga_module #(
     localparam END_V_SYNC = V_DISPLAY + V_FPORCH + V_SYNC
 
 ) (
-    input clk,  // 25.125 Mhz clock
+    input inclk,  // 25.125 Mhz clock
     input reset,  // asynchronous reset
     output h_sync,  // H sync signal active low
     output v_sync,  // V sync signal active low 
@@ -37,7 +37,6 @@ module vga_module #(
     wire v_sync_next, h_sync_next;
     wire [9:0] h_next, v_next;
 
-    // Counter 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
             h_count <= 0;
@@ -53,18 +52,14 @@ module vga_module #(
         end
     end
     
-    // Logic for next horz. vert. pulse
     assign h_next = h_count == H_MAX ? 0 : h_count + 1;
     assign v_next = h_count == H_MAX ? (v_count == V_MAX ? 0 : v_count + 1) : v_count;
 
-    // Logic for v_sync and h_sync next
     assign v_sync_next = ~(v_count >= START_V_SYNC && v_count <= END_V_SYNC);
     assign h_sync_next = ~(h_count >= START_H_SYNC && h_count <= END_H_SYNC);
 
-    // Video on for sending pixel data
     assign video_on = (v_count < V_DISPLAY && h_count < H_DISPLAY);
 
-    // Assigning output ports
     assign pos_x = h_count;
     assign pos_y = v_count;
     assign h_sync = h_sync_reg;
