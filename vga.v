@@ -1,6 +1,5 @@
 module vga_module #(
 
-
     // Parameters for horizontal time sync
     localparam H_DISPLAY = 640,
     localparam H_FPORCH = 16,
@@ -20,16 +19,13 @@ module vga_module #(
     localparam END_V_SYNC = V_DISPLAY + V_FPORCH + V_SYNC
 
 ) (
-    input inclk,  // 25.125 Mhz clock
+    input clk,  // 25.125 Mhz clock
     input reset,  // asynchronous reset
     output h_sync,  // H sync signal active low
     output v_sync,  // V sync signal active low 
     output video_on,  // Color output on signal
     output [9:0] pos_x, pos_y  // pixel location for Ext. ROM
 );
-
-    // Clocking Wizard to 25.125 Mhz (Input 100 Mhz)
-    clk_wiz_0 CLK (.clk_out1(clk), .reset(reset), .clk_in1(inclk));
 
     // Control signals reg
     reg [9:0] h_count, v_count;
